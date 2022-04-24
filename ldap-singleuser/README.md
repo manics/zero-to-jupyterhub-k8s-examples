@@ -11,7 +11,7 @@ Fetch the JupyterHub Helm chart
 helm repo add jupyterhub https://jupyterhub.github.io/helm-chart/
 ```
 
-Check the [`jupyterhub.yml` configuration](./jupyterhub.yml) to see how the `LDAPAuthenticator` has been extended so that `pre_spawn_start` passes LDAP attributes to the spawned singleuser server by setting environment variables.
+Check the [`jupyterhub.yml` configuration](./jupyterhub.yml) to see all the customisations.
 
 Install JupyterHub:
 ```
@@ -27,3 +27,9 @@ Login with one of the test LDAP users, e.g. user:`zoidberg` password:`zoidberg`.
 Open a Jupyter terminal.
 You should see the username is `zoidberg` instead of the default `jovyan`.
 If you run `git commit` you should see the author name and email are taken from LDAP.
+
+
+## Configuration
+The main custom configuration in [`jupyterhub.yml` configuration](./jupyterhub.yml) is:
+- Extending `LDAPAuthenticator` so that `pre_spawn_start` passes LDAP attributes to the spawned singleuser server using environment variables.
+- Disabling the default dynamic user storage which is mounted at `/home/jovyan`, and instead mounting dynamically created volumes at `/home/{username}`

@@ -19,6 +19,7 @@ hub:
   extraConfig:
     SpawnerCustomConfig: |
         from ldapauthenticator import LDAPAuthenticator
+        from hashlib import md5
 
         class LDAPAuthenticatorInfo(LDAPAuthenticator):
             async def pre_spawn_start(self, user, spawner):
@@ -29,8 +30,9 @@ hub:
 
                 # Setup environment variables to pass to singleuser server
 
-                # If your LDAP server provides a numeric user ID you can add it here
-                # spawner.environment["NB_UID"]
+                # The test server doesn't have numeric UIDs, so create one by hashing uid
+                spawner.environment["NB_UID"] = str(
+                    int(md5(auth_state["uid"][0].encode()).hexdigest(), 16) % 32768 + 1001)
                 spawner.environment["NB_USER"] = auth_state["uid"][0]
                 spawner.environment["GIT_AUTHOR_NAME"] = auth_state["cn"][0]
                 spawner.environment["GIT_COMMITTER_NAME"] = auth_state["cn"][0]
@@ -39,6 +41,10 @@ hub:
 
         c.JupyterHub.authenticator_class = LDAPAuthenticatorInfo
 
+    CustomHubConfig: |
+        # Needed to dynamically create PVCs
+        c.KubeSpawner.storage_pvc_ensure = True
+        c.KubeSpawner.storage_capacity = "1Gi"
         # Shutdown servers when hub restarts to make testing easier
         c.JupyterHub.cleanup_servers = True
 
@@ -52,6 +58,16 @@ singleuser:
   #   tag:
   # Run as root so we can switch user based on LDAP attributes
   uid: 0
+  storage:
+    # Disable default volume mounted at /home/jovyan
+    type: none
+    extraVolumes:
+      - name: volume-{username}--{servername}
+        persistentVolumeClaim:
+          claimName: claim-{username}--{servername}
+    extraVolumeMounts:
+      - name: volume-{username}--{servername}
+        mountPath: /home/{username}
 
 ingress:
   enabled: true
