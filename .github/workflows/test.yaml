@@ -1,0 +1,34 @@
+name: Test
+
+on:
+  pull_request:
+  push:
+  workflow_dispatch:
+
+jobs:
+  test:
+    runs-on: ubuntu-20.04
+    timeout-minutes: 20
+
+    strategy:
+      fail-fast: false
+      matrix:
+        test:
+          - ldap-singleuser
+
+    steps:
+      - uses: actions/checkout@v3
+
+      # https://github.com/jupyterhub/action-k3s-helm/
+      - uses: jupyterhub/action-k3s-helm@v1
+        with:
+          k3s-channel: v1.23
+
+      - uses: actions/setup-python@v3
+        with:
+          python-version: "3.10"
+
+      - name: Install deployment
+        run: |
+          cd ${{ matrix.test }}
+          ../ci/run_codeblocks.py README.md --sub '<k8s-hostname>=localhost' --run
