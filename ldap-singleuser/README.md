@@ -2,8 +2,8 @@
 
 Install an example OpenLDAP server with test data:
 ```
-git clone https://github.com/manics/helm-test-openldap
-helm upgrade --install ldap ./helm-test-openldap --wait
+helm repo add test-openldap https://www.manicstreetpreacher.co.uk/helm-test-openldap/
+helm upgrade --install ldap test-openldap/test-openldap --wait
 ```
 
 Fetch the JupyterHub Helm chart
@@ -15,7 +15,7 @@ Check the [`jupyterhub.yml` configuration](./jupyterhub.yml) to see all the cust
 
 Install JupyterHub:
 ```
-helm upgrade --cleanup-on-fail --install jupyterhub jupyterhub/jupyterhub --version=1.1.3-n423.hae439dba --values jupyterhub.yml --wait
+helm upgrade --cleanup-on-fail --install jupyterhub jupyterhub/jupyterhub --version=1.1.3-n612.hf25e8f00 --values jupyterhub.yml --set 'ingress.hosts.[0]'=<k8s-hostname> --wait
 ```
 
 Check everything is running:
