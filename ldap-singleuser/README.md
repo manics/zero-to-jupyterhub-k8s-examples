@@ -15,7 +15,7 @@ Check the [`jupyterhub.yml` configuration](./jupyterhub.yml) to see all the cust
 
 Install JupyterHub:
 ```
-helm upgrade --cleanup-on-fail --install jupyterhub jupyterhub/jupyterhub --version=1.1.3-n612.hf25e8f00 --values jupyterhub.yml --set 'ingress.hosts.[0]'=<k8s-hostname> --wait
+helm upgrade --cleanup-on-fail --install jupyterhub jupyterhub/jupyterhub --version=1.1.3-n612.hf25e8f00 --values jupyterhub.yml --set 'ingress.hosts[0]'=<k8s-hostname> --wait
 ```
 
 Check everything is running:
