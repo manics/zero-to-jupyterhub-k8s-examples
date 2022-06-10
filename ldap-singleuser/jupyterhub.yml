@@ -42,10 +42,6 @@ hub:
         c.JupyterHub.authenticator_class = LDAPAuthenticatorInfo
 
     CustomHubConfig: |
-        # Needed to dynamically create PVCs
-        c.KubeSpawner.storage_pvc_ensure = True
-        c.KubeSpawner.storage_capacity = "1Gi"
-        # Shutdown servers when hub restarts to make testing easier
         c.JupyterHub.cleanup_servers = True
 
 proxy:
@@ -59,15 +55,8 @@ singleuser:
   # Run as root so we can switch user based on LDAP attributes
   uid: 0
   storage:
-    # Disable default volume mounted at /home/jovyan
-    type: none
-    extraVolumes:
-      - name: volume-{username}--{servername}
-        persistentVolumeClaim:
-          claimName: claim-{username}--{servername}
-    extraVolumeMounts:
-      - name: volume-{username}--{servername}
-        mountPath: /home/{username}
+    # Mount persistent volume at correct home
+    homeMountPath: /home/{username}
 
 ingress:
   enabled: true
