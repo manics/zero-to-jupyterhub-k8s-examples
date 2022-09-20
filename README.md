@@ -7,3 +7,7 @@ If you need help with deploying JupyterHub please use the [Jupyter community for
 ## LDAP with modified username and Git author in singleuser server
 
 [ldap-singleuser](./ldap-singleuser/README.md)
+
+## JupyterHub with Keycloak
+
+[keycloak](./keycloak/README.md)

@@ -1,0 +1,24 @@
+# https://artifacthub.io/packages/helm/bitnami/keycloak
+
+auth:
+  adminUser: admin
+  adminPassword: admin
+
+httpRelativePath: /keycloak/
+
+service:
+  type: ClusterIP
+
+ingress:
+  enabled: true
+  hostname: %K8S_HOSTNAME%
+  path: /keycloak/
+  # extraHosts:
+  #   - name: localhost
+  #     path: /keycloak/
+
+networkPolicy:
+  enabled: true
+
+rbac:
+  create: true
