@@ -18,31 +18,31 @@ hub:
       use_lookup_dn_username: False
   extraConfig:
     SpawnerCustomConfig: |
-        from ldapauthenticator import LDAPAuthenticator
-        from hashlib import md5
+      from ldapauthenticator import LDAPAuthenticator
+      from hashlib import md5
 
-        class LDAPAuthenticatorInfo(LDAPAuthenticator):
-            async def pre_spawn_start(self, user, spawner):
-                auth_state = await user.get_auth_state()
-                self.log.debug(f"pre_spawn_start auth_state: {auth_state}")
-                if not auth_state:
-                    return
+      class LDAPAuthenticatorInfo(LDAPAuthenticator):
+          async def pre_spawn_start(self, user, spawner):
+              auth_state = await user.get_auth_state()
+              self.log.debug(f"pre_spawn_start auth_state: {auth_state}")
+              if not auth_state:
+                  return
 
-                # Setup environment variables to pass to singleuser server
+              # Setup environment variables to pass to singleuser server
 
-                # The test server doesn't have numeric UIDs, so create one by hashing uid
-                spawner.environment["NB_UID"] = str(
-                    int(md5(auth_state["uid"][0].encode()).hexdigest(), 16) % 32768 + 1001)
-                spawner.environment["NB_USER"] = auth_state["uid"][0]
-                spawner.environment["GIT_AUTHOR_NAME"] = auth_state["cn"][0]
-                spawner.environment["GIT_COMMITTER_NAME"] = auth_state["cn"][0]
-                spawner.environment["GIT_AUTHOR_EMAIL"] = auth_state["mail"][0]
-                spawner.environment["GIT_COMMITTER_EMAIL"] = auth_state["mail"][0]
+              # The test server doesn't have numeric UIDs, so create one by hashing uid
+              spawner.environment["NB_UID"] = str(
+                  int(md5(auth_state["uid"][0].encode()).hexdigest(), 16) % 32768 + 1001)
+              spawner.environment["NB_USER"] = auth_state["uid"][0]
+              spawner.environment["GIT_AUTHOR_NAME"] = auth_state["cn"][0]
+              spawner.environment["GIT_COMMITTER_NAME"] = auth_state["cn"][0]
+              spawner.environment["GIT_AUTHOR_EMAIL"] = auth_state["mail"][0]
+              spawner.environment["GIT_COMMITTER_EMAIL"] = auth_state["mail"][0]
 
-        c.JupyterHub.authenticator_class = LDAPAuthenticatorInfo
+      c.JupyterHub.authenticator_class = LDAPAuthenticatorInfo
 
     CustomHubConfig: |
-        c.JupyterHub.cleanup_servers = True
+      c.JupyterHub.cleanup_servers = True
 
 proxy:
   service:
