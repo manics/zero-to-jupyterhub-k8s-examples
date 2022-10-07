@@ -49,10 +49,13 @@ proxy:
     type: ClusterIP
 
 singleuser:
-  # image:
-  #   name:
-  #   tag:
-  # Run as root so we can switch user based on LDAP attributes
+  image:
+    name: docker.io/jupyter/base-notebook
+    tag: latest
+  # If jupyter/base-notebook is run as root it can automatically replace the default
+  # jovyan user with a username and uid passed from ldap.
+  # Z2JH overrides the container start command, switch back to the container default.
+  cmd:
   uid: 0
   storage:
     # Mount persistent volume at correct home
@@ -60,7 +63,8 @@ singleuser:
 
 ingress:
   enabled: true
-  # hosts: set on the command line since it depends on the external IP
+  hosts:
+    - %K8S_HOSTNAME%
 
 debug:
   enabled: true
