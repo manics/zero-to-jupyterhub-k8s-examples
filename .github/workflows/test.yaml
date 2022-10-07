@@ -75,3 +75,14 @@ jobs:
           echo "::group::hub"
           kubectl logs deploy/hub
           echo "::endgroup::"
+
+  status-check:
+    runs-on: ubuntu-latest
+    needs:
+      - pre-commit
+      - test
+
+    steps:
+      - name: Status check
+        run: |
+          echo "All tests passed!"
