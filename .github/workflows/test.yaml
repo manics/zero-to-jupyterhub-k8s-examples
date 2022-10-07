@@ -61,12 +61,10 @@ jobs:
           cd ${{ matrix.test }}
           ../ci/run_codeblocks.py README.md --sub "<k8s-hostname>=$K8S_HOSTNAME" --run
 
-      - name: Run tests if applicable
+      - name: Run tests
         run: |
           cd ${{ matrix.test }}
-          if [ -d tests ]; then
-            pytest --browser firefox --base-url "http://$K8S_HOSTNAME"
-          fi
+          pytest --browser firefox --base-url "http://$K8S_HOSTNAME"
 
       - name: Get logs on failure
         if: failure()
@@ -77,3 +75,24 @@ jobs:
           echo "::group::hub"
           kubectl logs deploy/hub
           echo "::endgroup::"
+
+  # Set a single status check for the whole workflow, so that we can use it in a
+  # branch protection rule
+  status-check:
+    runs-on: ubuntu-latest
+    needs:
+      - pre-commit
+      - test
+    if: always()
+    steps:
+      - name: Get job statuses
+        uses: technote-space/workflow-conclusion-action@v3.0.1
+        with:
+          FALLBACK_CONCLUSION: failure
+          STRICT_SUCCESS: true
+        # Status is saved in env.WORKFLOW_CONCLUSION
+
+      - name: Status check
+        if: env.WORKFLOW_CONCLUSION != 'success'
+        run: |
+          exit 1
