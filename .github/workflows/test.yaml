@@ -61,12 +61,10 @@ jobs:
           cd ${{ matrix.test }}
           ../ci/run_codeblocks.py README.md --sub "<k8s-hostname>=$K8S_HOSTNAME" --run
 
-      - name: Run tests if applicable
+      - name: Run tests
         run: |
           cd ${{ matrix.test }}
-          if [ -d tests ]; then
-            pytest --browser firefox --base-url "http://$K8S_HOSTNAME"
-          fi
+          pytest --browser firefox --base-url "http://$K8S_HOSTNAME"
 
       - name: Get logs on failure
         if: failure()
