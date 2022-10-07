@@ -35,9 +35,45 @@ jobs:
       - uses: actions/setup-python@v4
         with:
           python-version: "3.10"
+          cache: pip
+          cache-dependency-path: dev-requirements.txt
+
+      - name: Cache Playwright browsers
+        uses: actions/cache@v3
+        with:
+          path: ~/.cache/ms-playwright
+          # If playwright version is bumped then refresh browsers
+          key: ${{ runner.os }}-playwright-${{ hashFiles('dev-requirements.txt') }}
+
+      - name: Install dependencies
+        run: |
+          pip install -r dev-requirements.txt
+          playwright install firefox
+
+      - name: Set k8s ingress address
+        run: |
+          # Needs to resolve inside and outside the cluster
+          K8S_HOSTNAME=$(hostname -I | awk '{print $1}').nip.io
+          echo "K8S_HOSTNAME=$K8S_HOSTNAME" >> $GITHUB_ENV
 
       - name: Install deployment
         run: |
           cd ${{ matrix.test }}
-          K8S_HOSTNAME=$(hostname -f)
           ../ci/run_codeblocks.py README.md --sub "<k8s-hostname>=$K8S_HOSTNAME" --run
+
+      - name: Run tests if applicable
+        run: |
+          cd ${{ matrix.test }}
+          if [ -d tests ]; then
+            pytest --browser firefox --base-url "http://$K8S_HOSTNAME"
+          fi
+
+      - name: Get logs on failure
+        if: failure()
+        run: |
+          echo "::group::keycloak"
+          kubectl logs statefulset/keycloak
+          echo "::endgroup::"
+          echo "::group::hub"
+          kubectl logs deploy/hub
+          echo "::endgroup::"

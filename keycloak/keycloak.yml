@@ -1,5 +1,12 @@
 # https://artifacthub.io/packages/helm/bitnami/keycloak
 
+image:
+  debug: true
+
+extraEnvVars:
+  - name: KEYCLOAK_LOG_LEVEL
+    value: ALL
+
 auth:
   adminUser: admin
   adminPassword: admin
