@@ -4,7 +4,8 @@ image:
   debug: true
 
 extraEnvVars:
-  - name: KEYCLOAK_LOG_LEVEL
+  # For debugging only
+  - name: KC_LOG_LEVEL
     value: ALL
 
 auth:
