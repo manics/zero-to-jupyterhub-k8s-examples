@@ -86,7 +86,7 @@ jobs:
     if: always()
     steps:
       - name: Get job statuses
-        uses: technote-space/workflow-conclusion-action@v3.0.1
+        uses: technote-space/workflow-conclusion-action@v3.0.3
         with:
           FALLBACK_CONCLUSION: failure
           STRICT_SUCCESS: true
