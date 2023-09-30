@@ -12,6 +12,8 @@ hub:
       authorize_url: http://%K8S_HOSTNAME%/keycloak/realms/master/protocol/openid-connect/auth
       token_url: http://%K8S_HOSTNAME%/keycloak/realms/master/protocol/openid-connect/token
       userdata_url: http://%K8S_HOSTNAME%/keycloak/realms/master/protocol/openid-connect/userinfo
+      scope:
+        - openid
       login_service: keycloak
       username_key: preferred_username
       userdata_params:
