@@ -20,8 +20,7 @@ sed -i 's/%K8S_HOSTNAME%/<k8s-hostname>/g' jupyterhub.yml keycloak.yml
 Install Keycloak with a default admin user
 
 ```
-helm repo add bitnami https://charts.bitnami.com/bitnami
-helm upgrade --install keycloak bitnami/keycloak --version=10.1.0 -f keycloak.yml --wait
+helm upgrade --install keycloak oci://registry-1.docker.io/bitnamicharts/keycloak --version=16.1.6 -f keycloak.yml --wait
 ```
 
 Use the [python-keycloak](https://github.com/marcospereirampj/python-keycloak) module to create a user and OAuth client.
