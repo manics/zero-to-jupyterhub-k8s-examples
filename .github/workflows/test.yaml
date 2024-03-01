@@ -28,7 +28,7 @@ jobs:
       - uses: actions/checkout@v4
 
       # https://github.com/jupyterhub/action-k3s-helm/
-      - uses: jupyterhub/action-k3s-helm@v3
+      - uses: jupyterhub/action-k3s-helm@v4
         with:
           k3s-channel: v1.24
 
