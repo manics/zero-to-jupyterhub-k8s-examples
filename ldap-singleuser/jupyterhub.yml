@@ -50,7 +50,7 @@ proxy:
 
 singleuser:
   image:
-    name: docker.io/jupyter/base-notebook
+    name: quay.io/jupyter/base-notebook
     tag: latest
   # If jupyter/base-notebook is run as root it can automatically replace the default
   # jovyan user with a username and uid passed from ldap.
