@@ -41,7 +41,7 @@ Check the [`jupyterhub.yml` configuration](./jupyterhub.yml) to see all the cust
 Install JupyterHub:
 
 ```
-helm upgrade --install jupyterhub jupyterhub/jupyterhub --version=3.3.7 --values jupyterhub.yml --wait
+helm upgrade --install jupyterhub jupyterhub/jupyterhub --version=3.3.8 --values jupyterhub.yml --wait
 ```
 
 Check everything is running:
