@@ -30,6 +30,6 @@ with open(args.input) as f:
             code.append(line)
 
 for c in code:
-    print(f"Running {c}")
+    print(f"Running {c}", flush=True)
     if args.run:
         run(c, shell=True, check=True)
