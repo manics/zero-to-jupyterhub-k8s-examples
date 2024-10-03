@@ -4,6 +4,7 @@ hub:
     #   authenticator_class: ldapauthenticator.LDAPAuthenticator
     Authenticator:
       enable_auth_state: true
+      allow_all: true
     LDAPAuthenticator:
       # See https://github.com/rroemhild/docker-test-openldap#ldap-structure
       # for users
