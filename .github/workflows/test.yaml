@@ -69,9 +69,16 @@ jobs:
       - name: Get logs on failure
         if: failure()
         run: |
-          echo "::group::keycloak"
-          kubectl logs statefulset/keycloak
-          echo "::endgroup::"
+          if [ "${{ matrix.test }}" = keycloak ]; then
+            echo "::group::keycloak"
+            kubectl logs statefulset/keycloak
+            echo "::endgroup::"
+          fi
+          if [ "${{ matrix.test }}" = ldap-singleuser ]; then
+            echo "::group::ldap"
+            kubectl logs deploy/ldap-test-openldap
+            echo "::endgroup::"
+          fi
           echo "::group::hub"
           kubectl logs deploy/hub
           echo "::endgroup::"
