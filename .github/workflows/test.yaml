@@ -66,8 +66,8 @@ jobs:
           cd ${{ matrix.test }}
           pytest --browser firefox --base-url "http://$K8S_HOSTNAME"
 
-      - name: Get logs on failure
-        if: failure()
+      - name: Get logs, including on failure
+        if: always()
         run: |
           if [ "${{ matrix.test }}" = keycloak ]; then
             echo "::group::keycloak"
