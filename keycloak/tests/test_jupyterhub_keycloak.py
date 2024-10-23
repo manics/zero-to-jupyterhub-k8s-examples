@@ -18,7 +18,7 @@ def test_browser(page):
     page.locator('input[name="password"]').fill("secret")
 
     # Click "Sign In"
-    page.locator('input:has-text("Sign In")').click()
+    page.locator('button:has-text("Sign In")').click()
     # page.wait_for_url("/jupyter/hub/spawn-pending/*")
 
     # Server should be spawned, and should be redirected to JupyterLab
