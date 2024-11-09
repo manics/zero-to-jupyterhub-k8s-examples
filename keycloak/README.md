@@ -20,7 +20,7 @@ sed -i 's/%K8S_HOSTNAME%/<k8s-hostname>/g' jupyterhub.yml keycloak.yml
 Install Keycloak with a default admin user
 
 ```
-helm upgrade --install keycloak oci://registry-1.docker.io/bitnamicharts/keycloak --version=22.1.2 -f keycloak.yml --wait
+helm upgrade --install keycloak oci://registry-1.docker.io/bitnamicharts/keycloak --version=24.1.0 -f keycloak.yml --wait
 ```
 
 Use the [python-keycloak](https://github.com/marcospereirampj/python-keycloak) module to create a user and OAuth client.
@@ -43,7 +43,7 @@ helm repo add jupyterhub https://jupyterhub.github.io/helm-chart/
 Install JupyterHub:
 
 ```
-helm upgrade --install jupyterhub jupyterhub/jupyterhub --version=3.3.8 --values jupyterhub.yml --wait
+helm upgrade --install jupyterhub jupyterhub/jupyterhub --version=4.0.0 --values jupyterhub.yml --wait
 ```
 
 Check everything is running:

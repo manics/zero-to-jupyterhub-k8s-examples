@@ -30,7 +30,7 @@ jobs:
       # https://github.com/jupyterhub/action-k3s-helm/
       - uses: jupyterhub/action-k3s-helm@v4
         with:
-          k3s-channel: v1.24
+          k3s-channel: v1.28
 
       - uses: actions/setup-python@v5
         with:
@@ -66,12 +66,19 @@ jobs:
           cd ${{ matrix.test }}
           pytest --browser firefox --base-url "http://$K8S_HOSTNAME"
 
-      - name: Get logs on failure
-        if: failure()
+      - name: Get logs, including on failure
+        if: always()
         run: |
-          echo "::group::keycloak"
-          kubectl logs statefulset/keycloak
-          echo "::endgroup::"
+          if [ "${{ matrix.test }}" = keycloak ]; then
+            echo "::group::keycloak"
+            kubectl logs statefulset/keycloak
+            echo "::endgroup::"
+          fi
+          if [ "${{ matrix.test }}" = ldap-singleuser ]; then
+            echo "::group::ldap"
+            kubectl logs deploy/ldap-test-openldap
+            echo "::endgroup::"
+          fi
           echo "::group::hub"
           kubectl logs deploy/hub
           echo "::endgroup::"
