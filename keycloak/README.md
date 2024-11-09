@@ -43,7 +43,7 @@ helm repo add jupyterhub https://jupyterhub.github.io/helm-chart/
 Install JupyterHub:
 
 ```
-helm upgrade --install jupyterhub jupyterhub/jupyterhub --version=4.0.0-beta.4 --values jupyterhub.yml --wait
+helm upgrade --install jupyterhub jupyterhub/jupyterhub --version=4.0.0 --values jupyterhub.yml --wait
 ```
 
 Check everything is running:
