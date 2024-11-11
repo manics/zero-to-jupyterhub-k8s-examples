@@ -14,11 +14,22 @@ hub:
       userdata_url: http://%K8S_HOSTNAME%/keycloak/realms/master/protocol/openid-connect/userinfo
       scope:
         - openid
+        # The custom scope name
+        - jupyterhub-roles
       login_service: keycloak
       username_key: preferred_username
       userdata_params:
         state: state
-      allow_all: true
+      # The location of the custom Keycloak field in the userdata response
+      auth_state_groups_key: oauth_user.jupyterhub.roles
+      # JupyterHub defers to Keycloak for all group memberships
+      manage_groups: true
+      allowed_groups:
+        # The Keycloak role for JupyterHub users
+        - jupyterhub-users
+      admin_groups:
+        # The Keycloak role for JupyterHub admins
+        - jupyterhub-admins
     JupyterHub:
       authenticator_class: generic-oauth
 
