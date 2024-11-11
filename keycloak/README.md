@@ -1,4 +1,6 @@
-# Keycloak
+# Keycloak with custom roles
+
+The spins up a Keycloak server, and creates custom roles for managing JupyterHub admins and users in Keycloak.
 
 ## Prerequisites
 
@@ -23,13 +25,14 @@ Install Keycloak with a default admin user
 helm upgrade --install keycloak oci://registry-1.docker.io/bitnamicharts/keycloak --version=24.1.0 -f keycloak.yml --wait
 ```
 
-Use the [python-keycloak](https://github.com/marcospereirampj/python-keycloak) module to create a user and OAuth client.
+Use the [python-keycloak](https://github.com/marcospereirampj/python-keycloak) module to create a user and OAuth client and roles that can be used to define Jupyterhub users and admins.
+See the [`setup-keycloak.py`](setup-keycloak.py) script for details, along with [`jupyterhub.yml`](./jupyterhub.yml) for the matching JupyterHub configuration.
 
 ```
 python3 -mvenv ./venv
 . ./venv/bin/activate
 pip install python-keycloak
-python setup-keycloak.py --external-host http://<k8s-hostname>
+python setup-keycloak.py --keycloak-url=http://<k8s-hostname>/keycloak/ --jupyterhub-url=http://<k8s-hostname>/jupyter/
 ```
 
 ## JupyterHub
