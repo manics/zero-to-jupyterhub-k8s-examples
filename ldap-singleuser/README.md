@@ -25,7 +25,7 @@ Install an example OpenLDAP server with test data:
 
 ```
 helm repo add test-openldap https://www.manicstreetpreacher.co.uk/helm-test-openldap/
-helm upgrade --install ldap test-openldap/test-openldap --wait
+helm upgrade --install ldap test-openldap/test-openldap --version=0.2.0 --wait
 ```
 
 ## JupyterHub
