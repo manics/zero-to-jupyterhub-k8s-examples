@@ -7,14 +7,14 @@ on:
 
 jobs:
   pre-commit:
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-24.04
     steps:
       - uses: actions/checkout@v4
       - uses: actions/setup-python@v5
       - uses: pre-commit/action@v3.0.1
 
   test:
-    runs-on: ubuntu-20.04
+    runs-on: ubuntu-24.04
     timeout-minutes: 20
 
     strategy:
@@ -86,7 +86,7 @@ jobs:
   # Set a single status check for the whole workflow, so that we can use it in a
   # branch protection rule
   status-check:
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-24.04
     needs:
       - pre-commit
       - test
