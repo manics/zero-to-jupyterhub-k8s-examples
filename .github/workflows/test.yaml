@@ -30,7 +30,7 @@ jobs:
       # https://github.com/jupyterhub/action-k3s-helm/
       - uses: jupyterhub/action-k3s-helm@v4
         with:
-          k3s-channel: v1.28
+          k3s-channel: v1.31
 
       - uses: actions/setup-python@v5
         with:
