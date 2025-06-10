@@ -48,6 +48,9 @@ jobs:
       - name: Install dependencies
         run: |
           pip install -r dev-requirements.txt
+          # Install Playwright system dependencies
+          sudo apt-get update -y -q
+          sudo env PATH="$PATH" playwright install-deps
           playwright install firefox
 
       - name: Set k8s ingress address
