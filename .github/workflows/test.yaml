@@ -7,14 +7,14 @@ on:
 
 jobs:
   pre-commit:
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-24.04
     steps:
       - uses: actions/checkout@v4
       - uses: actions/setup-python@v5
       - uses: pre-commit/action@v3.0.1
 
   test:
-    runs-on: ubuntu-20.04
+    runs-on: ubuntu-24.04
     timeout-minutes: 20
 
     strategy:
@@ -30,7 +30,7 @@ jobs:
       # https://github.com/jupyterhub/action-k3s-helm/
       - uses: jupyterhub/action-k3s-helm@v4
         with:
-          k3s-channel: v1.28
+          k3s-channel: v1.31
 
       - uses: actions/setup-python@v5
         with:
@@ -48,6 +48,9 @@ jobs:
       - name: Install dependencies
         run: |
           pip install -r dev-requirements.txt
+          # Install Playwright system dependencies
+          sudo apt-get update -y -q
+          sudo env PATH="$PATH" playwright install-deps
           playwright install firefox
 
       - name: Set k8s ingress address
@@ -86,7 +89,7 @@ jobs:
   # Set a single status check for the whole workflow, so that we can use it in a
   # branch protection rule
   status-check:
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-24.04
     needs:
       - pre-commit
       - test

@@ -25,7 +25,7 @@ Install an example OpenLDAP server with test data:
 
 ```
 helm repo add test-openldap https://www.manicstreetpreacher.co.uk/helm-test-openldap/
-helm upgrade --install ldap test-openldap/test-openldap --wait
+helm upgrade --install ldap test-openldap/test-openldap --version=0.2.0 --wait
 ```
 
 ## JupyterHub
@@ -41,7 +41,7 @@ Check the [`jupyterhub.yml` configuration](./jupyterhub.yml) to see all the cust
 Install JupyterHub:
 
 ```
-helm upgrade --install jupyterhub jupyterhub/jupyterhub --version=4.0.0 --values jupyterhub.yml --wait
+helm upgrade --install jupyterhub jupyterhub/jupyterhub --version=4.2.0 --values jupyterhub.yml --wait
 ```
 
 Check everything is running:
