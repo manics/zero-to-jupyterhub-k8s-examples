@@ -30,18 +30,12 @@ helm upgrade --install ldap test-openldap/test-openldap --version=0.2.0 --wait
 
 ## JupyterHub
 
-Fetch the JupyterHub Helm chart
-
-```
-helm repo add jupyterhub https://jupyterhub.github.io/helm-chart/
-```
-
 Check the [`jupyterhub.yml` configuration](./jupyterhub.yml) to see all the customisations.
 
 Install JupyterHub:
 
 ```
-helm upgrade --install jupyterhub jupyterhub/jupyterhub --version=4.2.0 --values jupyterhub.yml --wait
+helm upgrade --install jupyterhub --repo=https://hub.jupyter.org/helm-chart/ jupyterhub --version=4.3.0 --values jupyterhub.yml --wait
 ```
 
 Check everything is running:
