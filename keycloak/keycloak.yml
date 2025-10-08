@@ -1,32 +1,33 @@
-# https://artifacthub.io/packages/helm/bitnami/keycloak
+# https://artifacthub.io/packages/helm/codecentric/keycloakx/7.1.4
+command:
+  - /opt/keycloak/bin/kc.sh
+  - start
+  - --http-port=8080
+  - --http-enabled=true
+  - --hostname-strict=false
 
-image:
-  debug: true
-
-extraEnvVars:
-  # For debugging only
+extraEnv: |
+  - name: KEYCLOAK_ADMIN
+    value: admin
+  - name: KEYCLOAK_ADMIN_PASSWORD
+    value: admin
   - name: KC_LOG_LEVEL
-    value: ALL
-
-auth:
-  adminUser: admin
-  adminPassword: admin
-
-httpRelativePath: /keycloak/
+  #   value: ALL
+    value: DEBUG
 
 service:
   type: ClusterIP
 
+http:
+  relativePath: /keycloak
+
 ingress:
   enabled: true
-  hostname: %K8S_HOSTNAME%
-  path: /keycloak/
-  # extraHosts:
-  #   - name: localhost
-  #     path: /keycloak/
-
-networkPolicy:
-  enabled: true
+  rules:
+    - host: %K8S_HOSTNAME%
+      paths:
+        - path: /keycloak
+          pathType: Prefix
 
 rbac:
   create: true
