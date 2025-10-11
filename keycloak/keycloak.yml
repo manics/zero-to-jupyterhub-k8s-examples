@@ -1,10 +1,12 @@
 # https://artifacthub.io/packages/helm/codecentric/keycloakx/7.1.4
+nameOverride: keycloak
+
 command:
   - /opt/keycloak/bin/kc.sh
   - start
   - --http-port=8080
   - --http-enabled=true
-  - --hostname-strict=false
+  - --hostname=%K8S_HOSTNAME%
 
 extraEnv: |
   - name: KEYCLOAK_ADMIN

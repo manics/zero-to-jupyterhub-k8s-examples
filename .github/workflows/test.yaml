@@ -74,7 +74,7 @@ jobs:
         run: |
           if [ "${{ matrix.test }}" = keycloak ]; then
             echo "::group::keycloak"
-            kubectl logs statefulset/keycloak-keycloakx
+            kubectl logs statefulset/keycloak
             echo "::endgroup::"
           fi
           if [ "${{ matrix.test }}" = ldap-singleuser ]; then
