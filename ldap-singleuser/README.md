@@ -24,8 +24,7 @@ The main custom configuration in [`jupyterhub.yml` configuration](./jupyterhub.y
 Install an example OpenLDAP server with test data:
 
 ```
-helm repo add test-openldap https://www.manicstreetpreacher.co.uk/helm-test-openldap/
-helm upgrade --install ldap test-openldap/test-openldap --version=0.2.0 --wait
+helm upgrade --install ldap --repo=https://www.manicstreetpreacher.co.uk/helm-test-openldap/ test-openldap --version=0.2.1 --wait
 ```
 
 ## JupyterHub
