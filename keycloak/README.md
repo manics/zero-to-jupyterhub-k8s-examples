@@ -40,7 +40,7 @@ python setup-keycloak.py --keycloak-url=http://<k8s-hostname>/keycloak/ --jupyte
 Install JupyterHub:
 
 ```
-helm upgrade --install jupyterhub --repo=https://hub.jupyter.org/helm-chart/ jupyterhub --version=4.3.1 --values jupyterhub.yml --wait
+helm upgrade --install jupyterhub --repo=https://hub.jupyter.org/helm-chart/ jupyterhub --version=4.3.2 --values jupyterhub.yml --wait
 ```
 
 Check everything is running:
