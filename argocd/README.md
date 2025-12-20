@@ -60,12 +60,14 @@ kubectl apply -f root-application.yaml
 ```
 
 If you did not fork this repository and configure the ingress you can instead [set a parameter](https://argo-cd.readthedocs.io/en/release-3.3/user-guide/commands/argocd_app_set/).
-You need to setup a port-foward to access the ArgoCD service, and login:
+You will need to setup a port-forward to access the ArgoCD service and login.
 
 ```sh
 kubectl -n argocd port-forward svc/argocd-server 8080:443 &
 sleep 1
+```
 
+```sh {retry=3}
 ARGOCD_PASSWORD=$(kubectl -n argocd get secret argocd-initial-admin-secret -o jsonpath="{.data.password}" | base64 -d)
 argocd login localhost:8080 --username=admin --password="$ARGOCD_PASSWORD" --insecure
 
