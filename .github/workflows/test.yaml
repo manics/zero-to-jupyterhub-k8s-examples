@@ -21,8 +21,13 @@ jobs:
       fail-fast: false
       matrix:
         test:
+          - argocd
           - ldap-singleuser
           - keycloak
+
+    env:
+      GITHUB_REPOSITORY: ${{ github.repository }}
+      GITHUB_REVISION: ${{ github.sha }}
 
     steps:
       - uses: actions/checkout@v6
@@ -72,18 +77,38 @@ jobs:
       - name: Get logs, including on failure
         if: always()
         run: |
+          if [ "${{ matrix.test }}" = argocd ]; then
+            echo "::group::argocd-application-controller"
+            kubectl -nargocd logs statefulset/argocd-application-controller
+            echo "::endgroup::"
+
+            echo "::group::argocd-repo-server"
+            kubectl -nargocd logs deploy/argocd-repo-server
+            echo "::endgroup::"
+
+            echo "::group::argocd-server"
+            kubectl -nargocd logs deploy/argocd-server
+            echo "::endgroup::"
+          fi
+
           if [ "${{ matrix.test }}" = keycloak ]; then
             echo "::group::keycloak"
             kubectl logs statefulset/keycloak
             echo "::endgroup::"
           fi
+
           if [ "${{ matrix.test }}" = ldap-singleuser ]; then
             echo "::group::ldap"
             kubectl logs deploy/ldap-test-openldap
             echo "::endgroup::"
           fi
+
           echo "::group::hub"
           kubectl logs deploy/hub
+          echo "::endgroup::"
+
+          echo "::group::proxy"
+          kubectl logs deploy/proxy
           echo "::endgroup::"
 
   # Set a single status check for the whole workflow, so that we can use it in a

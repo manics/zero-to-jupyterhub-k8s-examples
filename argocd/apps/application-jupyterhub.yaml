@@ -1,0 +1,65 @@
+# https://argo-cd.readthedocs.io/en/stable/user-guide/application-specification/
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: jupyterhub
+  namespace: argocd # Namespace where ArgoCD is installed
+spec:
+  project: default
+
+  source:
+    repoURL: https://hub.jupyter.org/helm-chart/
+    chart: jupyterhub
+    targetRevision: 4.3.2
+    helm:
+      # valueFiles:
+      #   - $values/argocd/jupyterhub.yml
+      values: |
+        hub:
+          config:
+            Authenticator:
+              allowed_users:
+                - demo
+        proxy:
+          service:
+            type: ClusterIP
+        ingress:
+          enabled: true
+          hosts:
+            # Override in your fork, or set with
+            # argocd app set jupyterhub -p ingress.hosts[0]=<ingress hostname>
+            - jupyterhub.example.org
+        debug:
+          enabled: true
+
+  ignoreDifferences:
+    - name: hub
+      kind: Secret
+      jsonPointers:
+        - /data/hub.config.ConfigurableHTTPProxy.auth_token
+        - /data/hub.config.CryptKeeper.keys
+        - /data/hub.config.JupyterHub.cookie_secret
+    - name: hub
+      kind: Deployment
+      group: apps
+      jsonPointers:
+        - /spec/template/metadata/annotations/checksum~1secret
+    - name: proxy
+      kind: Deployment
+      group: apps
+      jsonPointers:
+        - /spec/template/metadata/annotations/checksum~1auth-token
+
+  destination:
+    # Target the same cluster where ArgoCD is running (in-cluster deployment)
+    server: https://kubernetes.default.svc
+    # Namespace for JupyterHub
+    namespace: default
+  syncPolicy:
+    automated:
+      # Delete resources that are no longer defined in Git
+      prune: true
+      # Sync when drift is detected
+      selfHeal: true
+    syncOptions:
+      - CreateNamespace=true

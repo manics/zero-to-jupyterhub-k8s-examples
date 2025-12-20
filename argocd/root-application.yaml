@@ -1,0 +1,36 @@
+# https://argo-cd.readthedocs.io/en/stable/user-guide/application-specification/
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: root
+  # Namespace where ArgoCD is installed
+  namespace: argocd
+spec:
+  project: default
+
+  sources:
+    # Git repository containing the applications
+    - repoURL: https://github.com/manics/zero-to-jupyterhub-k8s-examples.git
+      # Branch or tag to use
+      targetRevision: main
+      # ref: values
+      # Directory within the repository containing ApplicationSet definitions
+      path: argocd/apps
+
+  # Target the same cluster where ArgoCD is running (in-cluster deployment)
+  destination:
+    server: https://kubernetes.default.svc
+    namespace: argocd
+  syncPolicy:
+    automated:
+      # Delete resources that are no longer defined in Git
+      prune: true
+      # Sync when drift is detected
+      selfHeal: true
+    syncOptions:
+      - CreateNamespace=true
+
+  # Extra information shown in the Argo CD Application details
+  info:
+    - name: URL
+      value: https://github.com/manics/zero-to-jupyterhub-k8s-examples

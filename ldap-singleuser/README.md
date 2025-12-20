@@ -10,7 +10,7 @@ Edit [`jupyterhub.yml`](./jupyterhub.yml), replacing `%K8S_HOSTNAME%` with your 
 
 E.g.
 
-```
+```sh
 sed -i 's/%K8S_HOSTNAME%/<k8s-hostname>/g' jupyterhub.yml
 ```
 
@@ -23,7 +23,7 @@ The main custom configuration in [`jupyterhub.yml` configuration](./jupyterhub.y
 
 Install an example OpenLDAP server with test data:
 
-```
+```sh
 helm upgrade --install ldap --repo=https://www.manicstreetpreacher.co.uk/helm-test-openldap/ test-openldap --version=0.2.1 --wait
 ```
 
@@ -33,13 +33,13 @@ Check the [`jupyterhub.yml` configuration](./jupyterhub.yml) to see all the cust
 
 Install JupyterHub:
 
-```
+```sh
 helm upgrade --install jupyterhub --repo=https://hub.jupyter.org/helm-chart/ jupyterhub --version=4.3.2 --values jupyterhub.yml --wait
 ```
 
 Check everything is running:
 
-```
+```sh
 kubectl get pods
 ```
 

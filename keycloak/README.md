@@ -13,7 +13,7 @@ This host must be reachable inside the cluster as well as outside, as JupyterHub
 
 E.g.
 
-```
+```sh
 sed -i 's/%K8S_HOSTNAME%/<k8s-hostname>/g' jupyterhub.yml keycloak.yml
 ```
 
@@ -21,14 +21,14 @@ sed -i 's/%K8S_HOSTNAME%/<k8s-hostname>/g' jupyterhub.yml keycloak.yml
 
 Install Keycloak with a default admin user
 
-```
+```sh
 helm upgrade --install keycloak --repo=https://codecentric.github.io/helm-charts keycloakx --version=7.1.4 -f keycloak.yml --wait
 ```
 
 Use the [python-keycloak](https://github.com/marcospereirampj/python-keycloak) module to create a user and OAuth client and roles that can be used to define Jupyterhub users and admins.
 See the [`setup-keycloak.py`](setup-keycloak.py) script for details, along with [`jupyterhub.yml`](./jupyterhub.yml) for the matching JupyterHub configuration.
 
-```
+```sh
 python3 -mvenv ./venv
 . ./venv/bin/activate
 pip install python-keycloak
@@ -39,13 +39,13 @@ python setup-keycloak.py --keycloak-url=http://<k8s-hostname>/keycloak/ --jupyte
 
 Install JupyterHub:
 
-```
+```sh
 helm upgrade --install jupyterhub --repo=https://hub.jupyter.org/helm-chart/ jupyterhub --version=4.3.2 --values jupyterhub.yml --wait
 ```
 
 Check everything is running:
 
-```
+```sh
 kubectl get pods
 ```
 
