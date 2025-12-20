@@ -1,0 +1,13 @@
+# https://github.com/argoproj/argo-helm/tree/argo-cd-9.1.9/charts/argo-cd
+
+global:
+  logging:
+    level: debug
+
+configs:
+  params:
+    server:
+      insecure: true
+  # Uncomment this if you want to use kustomize to modify Helm charts
+  # cm:
+  #   kustomize\\.buildOptions: "--enable-helm --load-restrictor LoadRestrictionsNone"
