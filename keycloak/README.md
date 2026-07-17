@@ -22,7 +22,7 @@ sed -i 's/%K8S_HOSTNAME%/<k8s-hostname>/g' jupyterhub.yml keycloak.yml
 Install Keycloak with a default admin user
 
 ```sh
-helm upgrade --install keycloak --repo=https://codecentric.github.io/helm-charts keycloakx --version=7.1.4 -f keycloak.yml --wait
+helm upgrade --install keycloak --repo=https://codecentric.github.io/helm-charts keycloakx --version=7.2.2 -f keycloak.yml --wait
 ```
 
 Use the [python-keycloak](https://github.com/marcospereirampj/python-keycloak) module to create a user and OAuth client and roles that can be used to define Jupyterhub users and admins.
@@ -40,7 +40,7 @@ python setup-keycloak.py --keycloak-url=http://<k8s-hostname>/keycloak/ --jupyte
 Install JupyterHub:
 
 ```sh
-helm upgrade --install jupyterhub --repo=https://hub.jupyter.org/helm-chart/ jupyterhub --version=4.3.2 --values jupyterhub.yml --wait
+helm upgrade --install jupyterhub --repo=https://hub.jupyter.org/helm-chart/ jupyterhub --version=4.4.0 --values jupyterhub.yml --wait
 ```
 
 Check everything is running:
