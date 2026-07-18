@@ -21,7 +21,7 @@ sysctl -w fs.inotify.max_user_watches=524288
 Install ArgoCD
 
 ```sh
-helm --namespace=argocd upgrade --create-namespace --install argocd --repo=https://argoproj.github.io/argo-helm argo-cd --version=9.1.9 -f argocd.yml --wait
+helm --namespace=argocd upgrade --create-namespace --install argocd --repo=https://argoproj.github.io/argo-helm argo-cd --version=10.1.4 -f argocd.yml --wait
 ```
 
 Optionally install the ArgoCD CLI.
@@ -82,6 +82,7 @@ Wait for ArgoCD to deploy JupyterHub:
 sleep 20
 kubectl -nargocd get applications
 
+kubectl -n argocd wait --for=jsonpath="{.status.sync.status}"=Synced application/jupyterhub --timeout=300s
 kubectl -nargocd wait --for=jsonpath="{.status.health.status}"=Healthy application/jupyterhub --timeout=300s
 
 kubectl -ndefault rollout status deployment/hub
