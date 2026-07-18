@@ -64,6 +64,14 @@ jobs:
           K8S_HOSTNAME=$(hostname -I | awk '{print $1}').nip.io
           echo "K8S_HOSTNAME=$K8S_HOSTNAME" >> $GITHUB_ENV
 
+      - name: Patch GitHub references
+        if: matrix.test == 'argocd'
+        run: |
+          yq eval -i ".spec.sources[0].targetRevision = env(TARGET_REV)" argocd/root-application.yaml
+          git diff
+        env:
+          TARGET_REV: ${{ github.event_name == 'pull_request' && format('refs/pull/{0}/merge', github.event.pull_request.number) || github.sha }}
+
       - name: Install deployment
         run: |
           cd ${{ matrix.test }}
