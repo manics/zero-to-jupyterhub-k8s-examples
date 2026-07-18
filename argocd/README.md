@@ -82,6 +82,7 @@ Wait for ArgoCD to deploy JupyterHub:
 sleep 20
 kubectl -nargocd get applications
 
+kubectl -n argocd wait --for=jsonpath="{.status.sync.status}"=Synced application/jupyterhub --timeout=300s
 kubectl -nargocd wait --for=jsonpath="{.status.health.status}"=Healthy application/jupyterhub --timeout=300s
 
 kubectl -ndefault rollout status deployment/hub
