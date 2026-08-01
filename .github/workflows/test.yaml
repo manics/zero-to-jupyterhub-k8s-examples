@@ -10,7 +10,7 @@ jobs:
     runs-on: ubuntu-24.04
     steps:
       - uses: actions/checkout@v7
-      - uses: actions/setup-python@v6
+      - uses: actions/setup-python@v7
       - uses: pre-commit/action@v3.0.1
 
   test:
@@ -37,7 +37,7 @@ jobs:
         with:
           k3s-channel: v1.31
 
-      - uses: actions/setup-python@v6
+      - uses: actions/setup-python@v7
         with:
           python-version: "3.13"
           cache: pip
